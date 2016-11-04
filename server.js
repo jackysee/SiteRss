@@ -26,8 +26,11 @@ var hiConfig = {
                         url: "http://www.ragazine.com.hk" +  $link.attr('href'),
                         title: $link.text().trim()
                     };
+                }).get()
+                .sort(function(link1, link2){
+                    return link1.title < link2.title;
                 })
-                .each(function(index, obj){
+                .forEach(function(obj){
                     items.push({
                         title: title + " " + obj.title,
                         link: "http://www.ragazine.com.hk" +  link,
