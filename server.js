@@ -12,22 +12,25 @@ var hiConfig = {
         var items = [];
         $('.jsn-article').each(function(index, el){
             var $this = $(this);
-            var title = $this.find('h2').eq(0).text().trim();
+            var $title = $this.find('h2').eq(0);
+            var title = $title.text().trim();
+            var link = $title.find("a").attr("href");
             var pubDate = parseDate(
                 $this.find('table').eq(0).find('tr').eq(1).text().trim()
             );
             var links = $this
-                .find("[href$=m4a]").filter("[href^=http]")
+                .find("[href$=m4a]").not("[href^=http]")
                 .map(function(){
                     var $link = $(this);
                     return {
-                        url: $link.attr('href'),
+                        url: "http://www.ragazine.com.hk" +  $link.attr('href'),
                         title: $link.text().trim()
                     };
                 })
                 .each(function(index, obj){
                     items.push({
                         title: title + " " + obj.title,
+                        link: "http://www.ragazine.com.hk" +  link,
                         pubDate: pubDate,
                         url: obj.url 
                     });
@@ -127,6 +130,7 @@ function handleRequest(request, response){
                             item: [
                                 { title: item.title },
                                 { pubDate: function(){ return item.pubDate }},
+                                { link: item.link },
                                 {
                                     _name: 'enclosure',
                                     _attrs: {
